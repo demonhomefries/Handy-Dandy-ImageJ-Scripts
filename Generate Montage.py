@@ -42,16 +42,19 @@ class Montage():
         self.num_rows = 8
         self.scale = 1
         self.font_size = 12
+        self.search_subdir = False
 
     def get_montage_parameters(self):
         while True:
             gd = GenericDialog("Generate montage parameters")
             gd.addDirectoryField("Input directory: ", self.input_dir, 50)
+            gd.addCheckbox("Search subdirectories", self.search_subdir)
+            gd.addMessage("")
             gd.addDirectoryField("Output directory: ", self.output_dir, 50)
             gd.addStringField("Output filename: ", self.file_name, 50)
             gd.addNumericField("Number of Columns: ", self.num_columns, 0)
             gd.addNumericField("Number of Rows: ", self.num_rows, 0)
-            gd.addNumericField("Scale: ", self.scale, 1)
+            gd.addNumericField("Scale: (1.0-0.1)", self.scale, 1)
             gd.addNumericField("Label font size: ", self.font_size, 0)
 
             gd.showDialog()
@@ -63,13 +66,17 @@ class Montage():
             self.num_rows = gd.getNextNumber()
             self.scale = gd.getNextNumber()
             self.font_size = gd.getNextNumber()
+            self.search_subdir = gd.getNextBoolean()
 
             if gd.wasCanceled():
                 print("get_montage_parameters was cancelled, restoring default values...")
                 return None
 
             if os.path.isdir(self.input_dir):
-                tif_filelist = find_tif_files(self.input_dir)
+                if self.search_subdir is True:
+                    tif_filelist = find_tif_files(self.input_dir)
+                elif self.search_subdir is False:
+                    tif_filelist = find_tif_files_surfacedir(self.input_dir)
                 self.num_images = len(tif_filelist)
                 if self.num_images < 1:
                     warning_dialog(str(self.input_dir) + "Contains 0 tif files. Please choose a directory with 1 or more .tifs")
