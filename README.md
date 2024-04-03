@@ -1,6 +1,11 @@
 # Handy-Dandy-ImageJ-Scripts
 Useful single-run scripts for Fiji ImageJ's batch analysis of cell plates.
 
+# Usage Notes
+Image files MUST follow this naming convention for script-compatibility:
+<WELL>_<READ_STEP_SEQUENCE>_<CHANNEL_INDEX>_<IMAGE_IN_WELL_INDEX>_<CHANNEL>_<READ_INDEX>.tif
+Example: A1_01_1_1_DAPI_001.tif
+
 ## Generate Montage (Generate Montage.py)
 Creates customized montage images from a folder of source TIFs. UI-enabled. Drag-and-drop into ImageJ and click run.
 
