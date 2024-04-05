@@ -12,15 +12,25 @@ import json
 import random
 
 class ComboBoxCellEditor(AbstractCellEditor, TableCellEditor):
-    def __init__(self, items):
-        self.comboBox = JComboBox(items)
-
-    def getCellEditorValue(self):
-        return self.comboBox.getSelectedItem()
+    def __init__(self, gui):
+        self.gui = gui
+        # print("Debugging ComboBoxCellEditor __init__")
+        # print(type(self.gui))
+        self.comboBox = JComboBox()
 
     def getTableCellEditorComponent(self, table, value, isSelected, row, column):
+        # Set the dropdown options based on the row
+        #options = self.gui.dropdownOptions[row] if row < len(self.gui.dropdownOptions) else []
+        directory = table.getModel().getValueAt(row, 0)
+        options = self.gui.directoryToOptions.get(directory, [])
+        self.comboBox.setModel(DefaultComboBoxModel(options))
         self.comboBox.setSelectedItem(value)
         return self.comboBox
+
+    def getCellEditorValue(self):
+        # Return the current value selected in the combo box
+        return self.comboBox.getSelectedItem()
+    
 
 class WindowCloseListener(WindowAdapter):
     def __init__(self, app):
@@ -29,12 +39,15 @@ class WindowCloseListener(WindowAdapter):
     def windowClosed(self, windowEvent):
         self.app.windowClosed = True
 
-class Application(ActionListener):
+class MontageGUI(ActionListener):
 
     def __init__(self):
+
+        self.directoryToOptions = {}
+        
         self.frame = JFrame("Montage Settings")
         self.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE)
-        self.frame.setSize(600, 820)
+        self.frame.setSize(600, 830)
         self.frame.setLayout(BorderLayout())
 
         # Directory Manager components
@@ -42,8 +55,9 @@ class Application(ActionListener):
         self.tableModel.addColumn("Directory")
         self.tableModel.addColumn("Read Step")
         self.table = JTable(self.tableModel)
-        comboBoxEditor = ComboBoxCellEditor(["Option1", "Option2"])
+        comboBoxEditor = ComboBoxCellEditor(self)
         self.table.getColumnModel().getColumn(1).setCellEditor(comboBoxEditor)
+
 
         scrollPane = JScrollPane(self.table)
 
@@ -111,6 +125,14 @@ class Application(ActionListener):
         quadrantsComboPanel.add(quadrantsComboLabel)
         quadrantsComboPanel.add(self.quadrantsCombo)
         combinedNorthPanel.add(quadrantsComboPanel)
+
+        # Channel Combo Panel
+        channelComboPanel = JPanel(FlowLayout(FlowLayout.LEFT))
+        channelComboLabel = JLabel("Channel to Montage: ")
+        self.channelCombo = JComboBox(Vector(["Composite", "RFP", "GFP", "DAPI", "Bright Field"]))
+        channelComboPanel.add(channelComboLabel)
+        channelComboPanel.add(self.channelCombo)
+        combinedNorthPanel.add(channelComboPanel)
 
         # Scale Panel
         scalePanel = JPanel(FlowLayout(FlowLayout.LEFT))
@@ -263,9 +285,13 @@ class Application(ActionListener):
             self.dynamicCombo.setEnabled(False)
 
     def updateDropdownForRow(self, rowIndex, options):
-        comboBoxEditor = ComboBoxCellEditor(options)
-        self.table.getColumnModel().getColumn(1).setCellEditor(comboBoxEditor)
+        # self.table.getColumnModel().getColumn(1).setCellEditor(comboBoxEditor)
+        # Update the options in the directory-to-options mapping
+        directory = self.tableModel.getValueAt(rowIndex, 0)
+        self.directoryToOptions[directory] = options
 
+        # Repaint the table to reflect the change
+        self.table.repaint()
 
     def addDirectory(self):
         chooser = JFileChooser()
@@ -277,8 +303,12 @@ class Application(ActionListener):
         if returnValue == JFileChooser.APPROVE_OPTION:
                 directory = chooser.getSelectedFile().getAbsolutePath()
                 read_steps = get_kinetic_read_list(directory)
-                read_steps_str = [str(step) for step in read_steps]  # Convert to string if needed
+                read_steps_str = [str(step) for step in read_steps]
 
+                # Add dropdown options for this row to the list
+                # self.dropdownOptions.append(read_steps_str)
+                self.directoryToOptions[directory] = read_steps_str
+                
                 # Add the directory to the table with a default option
                 self.tableModel.addRow([directory, read_steps_str[0] if read_steps_str else "No steps found"])
 
@@ -288,10 +318,19 @@ class Application(ActionListener):
 
                 self.lastSelectedDirectory = directory
 
+                # Update the dropdown for the new row
+                rowIndex = self.tableModel.getRowCount() - 1  # Index of the new row
+                self.updateDropdownForRow(rowIndex, read_steps_str)
+
     def removeDirectory(self):
         selectedRow = self.table.getSelectedRow()
         if selectedRow >= 0:
+            directory = self.tableModel.getValueAt(selectedRow, 0)
+            if directory in self.directoryToOptions:
+                del self.directoryToOptions[directory]
             self.tableModel.removeRow(selectedRow)
+
+
 
     def getDirectoryList(self):
         return [(self.tableModel.getValueAt(i, 0), self.tableModel.getValueAt(i, 1)) for i in range(self.tableModel.getRowCount())]
@@ -344,11 +383,12 @@ class Application(ActionListener):
         # Other Settings
         settingsPanel.add(JLabel("<html><b>PolyGR:</b> " + self.getPolyGRComboValue() + "</html>"))
         settingsPanel.add(JLabel("<html><b>Quadrant:</b> " + self.getQuadrantsComboValue() + "</html>"))
+        settingsPanel.add(JLabel("<html><b>Channel:</b> " + self.getChannelComboValue() + "</html>"))
         settingsPanel.add(JLabel("<html><b>Scale:</b> " + self.getScaleValue() + "</html>"))
         settingsPanel.add(JLabel("<html><b>Label font size:</b> " + self.getLabelFontSize() + "</html>"))
         settingsPanel.add(JLabel("<html><b>Border pixel size:</b> " + self.getBorderSize() + "</html>"))
 
-        # Show dialog
+        # Show confirmation dialog
         option = JOptionPane.showConfirmDialog(self.frame, settingsPanel, "Confirm Settings", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE)
 
         # OK button pressed
@@ -386,6 +426,9 @@ class Application(ActionListener):
 
     def getQuadrantsComboValue(self):
         return self.quadrantsCombo.getSelectedItem()
+
+    def getChannelComboValue(self):
+        return self.channelCombo.getSelectedItem()
     
     def getAllSettings(self):
             # Retrieve all settings and return them
@@ -398,13 +441,14 @@ class Application(ActionListener):
                 "concentration_selection": self.getSelectedConcentrations(),
                 "polygr_selection": self.getPolyGRComboValue(),
                 "quadrant_selection": self.getQuadrantsComboValue(),
+                "channel_selection": self.getChannelComboValue(),
                 "scale": self.getScaleValue(),
                 "label_font_size": self.getLabelFontSize(),
                 "border_size": self.getBorderSize()
             }
 
 def get_montage_settings(printout=False):
-    gui = Application()
+    gui = MontageGUI()
     gui.frame.setVisible(True)
 
     # Wait for the user to click Create Montage or close the window
@@ -420,21 +464,7 @@ def get_montage_settings(printout=False):
     elif gui.windowClosed:
         print("Window closed by the user.")
         return None  # or exit the script as needed
-
-def find_tif_files_surfacedir(directory):
-    tif_files = []
-    for item in os.listdir(directory):
-        # Construct full file path
-        full_path = os.path.join(directory, item)
-        # Check if it's a file and has .tif extension
-        if item.endswith('.tif'):
-            #print(f"Adding {full_path} to list!")
-            tif_files.append(full_path)
-    if len(tif_files) < 1:
-        tif_files = ["Invalid: no TIFs found"]
-    return tif_files
-
-
+    
 def get_kinetic_read_list(directory):
     tif_files = find_tif_files_surfacedir(directory)
     if tif_files is None:
@@ -455,8 +485,177 @@ def get_kinetic_read_list(directory):
 
     return unique_read_steps
 
+def load_dict(wellID_config_fp):
+    with open(wellID_config_fp, "r") as readfile:
+        wellid_config = json.load(readfile)
+        print("Successfully loaded wellID config from {}".format(wellID_config_fp))
+
+def find_tif_files_surfacedir(directory):
+    tif_files = []
+    for item in os.listdir(directory):
+        # Construct full file path
+        full_path = os.path.join(directory, item)
+        # Check if it's a file and has .tif extension
+        if item.endswith('.tif'):
+            #print(f"Adding {full_path} to list!")
+            tif_files.append(full_path)
+    if len(tif_files) < 1:
+        tif_files = ["Invalid: no TIFs found"]
+    return tif_files
+
+def extract_well_id(filename):
+    # Split the filename using underscore as a delimiter (this naming convention should not change from the Gen5 output)
+    parts = filename.split('_')
+    # Well ID is identified as a len >= 2 string where the first character is a number and subsequent characters are digits
+    for part in parts:
+        if len(part) >= 2 and part[0].isalpha() and part[1:].isdigit():
+            return part
+    # If well_id is not found, return None to be processed as an error
+    return None
+
+def isolate_wellIDs(settings, wellid_config):
+    eligible_wellids = {}
+
+    if settings["concentration_selection"] is False and settings["compounds_selected"] is True:
+        compound = settings["sortby_value"]
+        compound = compound.replace(" ", "")
+
+        if settings["polygr_selection"] == "Include":
+            gr_key = "1.8uMPolyGR"
+        elif settings["polygr_selection"] == "Exclude":
+            gr_key = "0uM"
+        else:
+            print("ERROR isolate_wellIDs: Settings returned polygr_selection as neither Include or Exclude")
+            exit()
+
+        # Ensuring that the keys and their nested structure exist
+        if compound not in eligible_wellids:
+            eligible_wellids[compound] = {}
+        if gr_key not in eligible_wellids[compound]:
+            eligible_wellids[compound][gr_key] = {}
+
+        for sortby, value in wellid_config[compound][gr_key].items():
+            eligible_wellids[compound][gr_key][sortby] = value
+
+    elif settings["concentration_selection"] is True and settings["compounds_selected"] is False:
+        if settings["polygr_selection"] == "Include":
+            gr_key = "1.8uMPolyGR"
+        elif settings["polygr_selection"] == "Exclude":
+            gr_key = "0uM"
+
+        sortby = settings["sortby_value"]
+
+        for compound, value in wellid_config.items():
+            if "Compound" in compound:
+                # Extract the desired value
+                eligible_value = value.get(gr_key, {}).get(sortby)
+                if eligible_value is not None:
+                    # Store the value in a nested structure
+                    if compound not in eligible_wellids:
+                        eligible_wellids[compound] = {}
+                    if gr_key not in eligible_wellids[compound]:
+                        eligible_wellids[compound][gr_key] = {}
+                    
+                    eligible_wellids[compound][gr_key][sortby] = eligible_value
+    
+    return eligible_wellids
+
+def isolate_quadrants(settings, isolated_wellids):
+    quadrant = settings["quadrant_selection"]
+    selected_wellIDs = {}
+
+    for compound, gr_dict in isolated_wellids.items():
+        for gr_key, sortby_dict in gr_dict.items():
+            if compound not in selected_wellIDs:
+                selected_wellIDs[compound] = {}
+            if gr_key not in selected_wellIDs[compound]:
+                selected_wellIDs[compound][gr_key] = {}
+
+            for sortby, well_list in sortby_dict.items():
+                if quadrant.lower() == "all":
+                    selected_wellIDs[compound][gr_key][sortby] = well_list
+                elif quadrant.lower() == "top left":
+                    selected_wellIDs[compound][gr_key][sortby] = [well_list[0]]
+                elif quadrant.lower() == "top right":
+                    selected_wellIDs[compound][gr_key][sortby] = [well_list[1]]
+                elif quadrant.lower() == "bottom left":
+                    selected_wellIDs[compound][gr_key][sortby] = [well_list[2]]
+                elif quadrant.lower() == "bottom right":
+                    selected_wellIDs[compound][gr_key][sortby] = [well_list[3]]
+                elif quadrant.lower() == "random":
+                    random_number = random.randint(0, 3)
+                    selected_wellIDs[compound][gr_key][sortby] = [well_list[random_number]]
+                else:
+                    print("ERROR get_specified_wellID: quadrant value was not recognized: {}".format(quadrant))
+                    return None
+
+    return selected_wellIDs
+
+def filter_eligible_tifs(settings, directory, kinetic_readstep):
+    """
+    Function is meant to be used in a loop - once per directory (easier data management)
+    Filters the .tif files once using the kinetic read step and the channel selection
+    Assumes read step number is 6th element in the underscore-delimited name: basename_elements[5]
+    Assumes channel ID is 5th element in the underscore-delimited name: basename_elements[4]
+    """
+    kinetic_readstep = int(kinetic_readstep)
+    filtered_filelist = []
+    channel_id = settings["channel_selection"]
+    file_list = find_tif_files_surfacedir(directory)
+    for file in file_list:
+        basename = os.path.basename(file)
+        filename, ext = os.path.splitext(basename)
+        basename_elements = filename.split("_")
+        basename_readstep = int(basename_elements[5])
+        if basename_readstep == kinetic_readstep: # Check that the sixth element (which should be the readstep) matches the selected readstep            
+            if channel_id in basename_elements[4]: # Check that the fifth element (which should be the name) matches the selected channel ID
+                filtered_filelist.append(file)
+    
+    if len(filtered_filelist) < 1:
+        print("ERROR filter_eligible_tifs: module could either not find kinetic_readstep ({}) or channel_id ({}) for the files in the directory: {}".format(kinetic_readstep, channel_id, directory))
+
+    return filtered_filelist
+
+def match_tifs_to_wellIDs(eligible_tifs, eligible_wellIDs):
+    
+    for file in eligible_tifs:
+        basename = os.path.basename(file)
+        filename, ext = os.path.splitext(basename)
+        extracted_wellid = extract_well_id(filename)
+
+        for compound, dosages in eligible_wellIDs.items():
+            for dosage, wells in dosages.items():
+                for concentration, well_ids in wells.items():
+                    wells[concentration] = [file if well_id == extracted_wellid else well_id for well_id in well_ids]
+
+    return eligible_wellIDs
+
 settings = get_montage_settings()
 print("Captured Montage Settings")
 if settings is None:
     print("Captured no settings")
 print(settings)
+
+        
+wellid_config = load_dict(wellID_config_fp)
+print(wellid_config)
+exit()
+
+for directory_tuple in settings["input_directory_list"]:
+    directory, read_step = directory_tuple
+    # Filter out the wellIDs according to concentration/compound & PolyGR +/-
+    isolated_wellIDs = isolate_wellIDs(settings, wellid_config)
+    # Further filter out the wellIDs based on quadrant selection
+    isolated_quadrants = isolate_quadrants(settings, isolated_wellIDs)
+    print(isolated_quadrants)
+    eligible_tifs = filter_eligible_tifs(settings, directory, read_step)
+    print(eligible_tifs)
+    quadrant_filedict = match_tifs_to_wellIDs(eligible_tifs, isolated_quadrants)
+    print(quadrant_filedict)
+
+
+    with open(r"C:\Users\akmishra\Desktop\kachow.json", "w") as writefile:
+        json.dump(quadrant_filedict, writefile, indent=4)
+        print("Successfully loaded wellID config")
+
+
