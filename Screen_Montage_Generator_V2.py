@@ -1,3 +1,550 @@
+wellid_config = {
+  "Controls": {
+    "DMSO": [
+      "A21",
+      "A22",
+      "B21",
+      "B22",
+      "C21",
+      "C22",
+      "D21",
+      "D22",
+      "I21",
+      "I22",
+      "J21",
+      "J22",
+      "K21",
+      "K22",
+      "L21",
+      "L22"
+    ],
+    "1.8uMPolyGR+1uMMS023": [
+      "G21",
+      "G22",
+      "H21",
+      "H22",
+      "O21",
+      "O22",
+      "P21",
+      "P22"
+    ],
+    "1.8uMPolyGR": [
+      "E21",
+      "E22",
+      "F21",
+      "F22",
+      "M21",
+      "M22",
+      "N21",
+      "N22"
+    ]
+  },
+  "Compound1": {
+    "1.8uMPolyGR": {
+      "20uM": [
+        "E1",
+        "E2",
+        "F1",
+        "F2"
+      ],
+      "6.33uM": [
+        "E3",
+        "E4",
+        "F3",
+        "F4"
+      ],
+      "2.01uM": [
+        "E5",
+        "E6",
+        "F5",
+        "F6"
+      ],
+      "0.634uM": [
+        "E7",
+        "E8",
+        "F7",
+        "F8"
+      ],
+      "0.201uM": [
+        "E9",
+        "E10",
+        "F9",
+        "F10"
+      ],
+      "0.0635uM": [
+        "E11",
+        "E12",
+        "F11",
+        "F12"
+      ],
+      "0.0201uM": [
+        "E13",
+        "E14",
+        "F13",
+        "F14"
+      ],
+      "0.0064uM": [
+        "E15",
+        "E16",
+        "F15",
+        "F16"
+      ],
+      "0.002uM": [
+        "E17",
+        "E18",
+        "F17",
+        "F18"
+      ],
+      "0.0006uM": [
+        "E19",
+        "E20",
+        "F19",
+        "F20"
+      ]
+    },
+    "0uM": {
+      "20uM": [
+        "A1",
+        "A2",
+        "B1",
+        "B2"
+      ],
+      "6.33uM": [
+        "A3",
+        "A4",
+        "B3",
+        "B4"
+      ],
+      "2.01uM": [
+        "A5",
+        "A6",
+        "B5",
+        "B6"
+      ],
+      "0.634uM": [
+        "A7",
+        "A8",
+        "B7",
+        "B8"
+      ],
+      "0.201uM": [
+        "A9",
+        "A10",
+        "B9",
+        "B10"
+      ],
+      "0.0635uM": [
+        "A11",
+        "A12",
+        "B11",
+        "B12"
+      ],
+      "0.0201uM": [
+        "A13",
+        "A14",
+        "B13",
+        "B14"
+      ],
+      "0.0064uM": [
+        "A15",
+        "A16",
+        "B15",
+        "B16"
+      ],
+      "0.002uM": [
+        "A17",
+        "A18",
+        "B17",
+        "B18"
+      ],
+      "0.0006uM": [
+        "A19",
+        "A20",
+        "B19",
+        "B20"
+      ]
+    }
+  },
+  "Compound2": {
+    "1.8uMPolyGR": {
+      "20uM": [
+        "G1",
+        "G2",
+        "H1",
+        "H2"
+      ],
+      "6.33uM": [
+        "G3",
+        "G4",
+        "H3",
+        "H4"
+      ],
+      "2.01uM": [
+        "G5",
+        "G6",
+        "H5",
+        "H6"
+      ],
+      "0.634uM": [
+        "G7",
+        "G8",
+        "H7",
+        "H8"
+      ],
+      "0.201uM": [
+        "G9",
+        "G10",
+        "H9",
+        "H10"
+      ],
+      "0.0635uM": [
+        "G11",
+        "G12",
+        "H11",
+        "H12"
+      ],
+      "0.0201uM": [
+        "G13",
+        "G14",
+        "H13",
+        "H14"
+      ],
+      "0.0064uM": [
+        "G15",
+        "G16",
+        "H15",
+        "H16"
+      ],
+      "0.002uM": [
+        "G17",
+        "G18",
+        "H17",
+        "H18"
+      ],
+      "0.0006uM": [
+        "G19",
+        "G20",
+        "H19",
+        "H20"
+      ]
+    },
+    "0uM": {
+      "20uM": [
+        "C1",
+        "C2",
+        "D1",
+        "D2"
+      ],
+      "6.33uM": [
+        "C3",
+        "C4",
+        "D3",
+        "D4"
+      ],
+      "2.01uM": [
+        "C5",
+        "C6",
+        "D5",
+        "D6"
+      ],
+      "0.634uM": [
+        "C7",
+        "C8",
+        "D7",
+        "D8"
+      ],
+      "0.201uM": [
+        "C9",
+        "C10",
+        "D9",
+        "D10"
+      ],
+      "0.0635uM": [
+        "C11",
+        "C12",
+        "D11",
+        "D12"
+      ],
+      "0.0201uM": [
+        "C13",
+        "C14",
+        "D13",
+        "D14"
+      ],
+      "0.0064uM": [
+        "C15",
+        "C16",
+        "D15",
+        "D16"
+      ],
+      "0.002uM": [
+        "C17",
+        "C18",
+        "D17",
+        "D18"
+      ],
+      "0.0006uM": [
+        "C19",
+        "C20",
+        "D19",
+        "D20"
+      ]
+    }
+  },
+  "Compound3": {
+    "1.8uMPolyGR": {
+      "20uM": [
+        "M1",
+        "M2",
+        "N1",
+        "N2"
+      ],
+      "6.33uM": [
+        "M3",
+        "M4",
+        "N3",
+        "N4"
+      ],
+      "2.01uM": [
+        "M5",
+        "M6",
+        "N5",
+        "N6"
+      ],
+      "0.634uM": [
+        "M7",
+        "M8",
+        "N7",
+        "N8"
+      ],
+      "0.201uM": [
+        "M9",
+        "M10",
+        "N9",
+        "N10"
+      ],
+      "0.0635uM": [
+        "M11",
+        "M12",
+        "N11",
+        "N12"
+      ],
+      "0.0201uM": [
+        "M13",
+        "M14",
+        "N13",
+        "N14"
+      ],
+      "0.0064uM": [
+        "M15",
+        "M16",
+        "N15",
+        "N16"
+      ],
+      "0.002uM": [
+        "M17",
+        "M18",
+        "N17",
+        "N18"
+      ],
+      "0.0006uM": [
+        "M19",
+        "M20",
+        "N19",
+        "N20"
+      ]
+    },
+    "0uM": {
+      "20uM": [
+        "I1",
+        "I2",
+        "J1",
+        "J2"
+      ],
+      "6.33uM": [
+        "I3",
+        "I4",
+        "J3",
+        "J4"
+      ],
+      "2.01uM": [
+        "I5",
+        "I6",
+        "J5",
+        "J6"
+      ],
+      "0.634uM": [
+        "I7",
+        "I8",
+        "J7",
+        "J8"
+      ],
+      "0.201uM": [
+        "I9",
+        "I10",
+        "J9",
+        "J10"
+      ],
+      "0.0635uM": [
+        "I11",
+        "I12",
+        "J11",
+        "J12"
+      ],
+      "0.0201uM": [
+        "I13",
+        "I14",
+        "J13",
+        "J14"
+      ],
+      "0.0064uM": [
+        "I15",
+        "I16",
+        "J15",
+        "J16"
+      ],
+      "0.002uM": [
+        "I17",
+        "I18",
+        "J17",
+        "J18"
+      ],
+      "0.0006uM": [
+        "I19",
+        "I20",
+        "J19",
+        "J20"
+      ]
+    }
+  },
+  "Compound4": {
+    "1.8uMPolyGR": {
+      "20uM": [
+        "O1",
+        "O2",
+        "P1",
+        "P2"
+      ],
+      "6.33uM": [
+        "O3",
+        "O4",
+        "P3",
+        "P4"
+      ],
+      "2.01uM": [
+        "O5",
+        "O6",
+        "P5",
+        "P6"
+      ],
+      "0.634uM": [
+        "O7",
+        "O8",
+        "P7",
+        "P8"
+      ],
+      "0.201uM": [
+        "O9",
+        "O10",
+        "P9",
+        "P10"
+      ],
+      "0.0635uM": [
+        "O11",
+        "O12",
+        "P11",
+        "P12"
+      ],
+      "0.0201uM": [
+        "O13",
+        "O14",
+        "P13",
+        "P14"
+      ],
+      "0.0064uM": [
+        "O15",
+        "O16",
+        "P15",
+        "P16"
+      ],
+      "0.002uM": [
+        "O17",
+        "O18",
+        "P17",
+        "P18"
+      ],
+      "0.0006uM": [
+        "O19",
+        "O20",
+        "P19",
+        "P20"
+      ]
+    },
+    "0uM": {
+      "20uM": [
+        "K1",
+        "K2",
+        "L1",
+        "L2"
+      ],
+      "6.33uM": [
+        "K3",
+        "K4",
+        "L3",
+        "L4"
+      ],
+      "2.01uM": [
+        "K5",
+        "K6",
+        "L5",
+        "L6"
+      ],
+      "0.634uM": [
+        "K7",
+        "K8",
+        "L7",
+        "L8"
+      ],
+      "0.201uM": [
+        "K9",
+        "K10",
+        "L9",
+        "L10"
+      ],
+      "0.0635uM": [
+        "K11",
+        "K12",
+        "L11",
+        "L12"
+      ],
+      "0.0201uM": [
+        "K13",
+        "K14",
+        "L13",
+        "L14"
+      ],
+      "0.0064uM": [
+        "K15",
+        "K16",
+        "L15",
+        "L16"
+      ],
+      "0.002uM": [
+        "K17",
+        "K18",
+        "L17",
+        "L18"
+      ],
+      "0.0006uM": [
+        "K19",
+        "K20",
+        "L19",
+        "L20"
+      ]
+    }
+  }
+}
+
 from javax.swing import JFrame, JPanel, JLabel, JButton, JList, JScrollPane, JFileChooser, JComboBox, JCheckBox, ButtonGroup, DefaultComboBoxModel, JTextField, JOptionPane, BoxLayout, JTable, AbstractCellEditor, DefaultListModel
 from javax.swing.table import TableCellRenderer, TableCellEditor, DefaultTableModel
 from java.awt import BorderLayout, FlowLayout, Component
@@ -6,6 +553,7 @@ from java.awt.event import ActionListener, WindowAdapter, WindowEvent
 from java.io import File
 from java.util import Vector, Date
 from java.text import SimpleDateFormat
+from ij import IJ, ImageStack, ImagePlus
 
 import os
 import json
@@ -465,6 +1013,15 @@ def get_montage_settings(printout=False):
         print("Window closed by the user.")
         return None  # or exit the script as needed
     
+class errorlist():
+    def __init__(self):
+        self.errors = []
+    def log(self, directory, reason):
+        print("ERROR " + str(reason) + ": " + str(directory))
+        self.errors.append((directory, reason))
+    def get_all_errors(self):
+        return self.errors
+
 def get_kinetic_read_list(directory):
     tif_files = find_tif_files_surfacedir(directory)
     if tif_files is None:
@@ -526,7 +1083,7 @@ def isolate_wellIDs(settings, wellid_config):
             gr_key = "0uM"
         else:
             print("ERROR isolate_wellIDs: Settings returned polygr_selection as neither Include or Exclude")
-            exit()
+            return None
 
         # Ensuring that the keys and their nested structure exist
         if compound not in eligible_wellids:
@@ -602,60 +1159,341 @@ def filter_eligible_tifs(settings, directory, kinetic_readstep):
     filtered_filelist = []
     channel_id = settings["channel_selection"]
     file_list = find_tif_files_surfacedir(directory)
-    for file in file_list:
-        basename = os.path.basename(file)
-        filename, ext = os.path.splitext(basename)
-        basename_elements = filename.split("_")
-        basename_readstep = int(basename_elements[5])
-        if basename_readstep == kinetic_readstep: # Check that the sixth element (which should be the readstep) matches the selected readstep            
-            if channel_id in basename_elements[4]: # Check that the fifth element (which should be the name) matches the selected channel ID
-                filtered_filelist.append(file)
-    
-    if len(filtered_filelist) < 1:
-        print("ERROR filter_eligible_tifs: module could either not find kinetic_readstep ({}) or channel_id ({}) for the files in the directory: {}".format(kinetic_readstep, channel_id, directory))
 
-    return filtered_filelist
+    try:
+        for file in file_list:
+            basename = os.path.basename(file)
+            filename, ext = os.path.splitext(basename)
+            basename_elements = filename.split("_")
+            basename_readstep = int(basename_elements[5])
+            if basename_readstep == kinetic_readstep: # Check that the sixth element (which should be the readstep) matches the selected readstep
+                if "composite" in channel_id.lower():
+                    if channel_id.lower() in filename.lower():
+                        filtered_filelist.append(file)
+                else:
+                    if channel_id.lower() in basename_elements[4].lower(): # Check that the fifth element (which should be the name) matches the selected channel ID
+                        filtered_filelist.append(file)
+        
+        if len(filtered_filelist) < 1:
+             return "ERROR filter_eligible_tifs: module could either not find kinetic_readstep ({}) or channel_id ({}) for the files in the directory: {}".format(kinetic_readstep, channel_id, directory)
+
+        return filtered_filelist
+    except Exception as e:
+        return "ERROR filter_eligible_tifs: {}".format(e)
 
 def match_tifs_to_wellIDs(eligible_tifs, eligible_wellIDs):
-    
-    for file in eligible_tifs:
-        basename = os.path.basename(file)
-        filename, ext = os.path.splitext(basename)
-        extracted_wellid = extract_well_id(filename)
 
-        for compound, dosages in eligible_wellIDs.items():
-            for dosage, wells in dosages.items():
-                for concentration, well_ids in wells.items():
-                    wells[concentration] = [file if well_id == extracted_wellid else well_id for well_id in well_ids]
+    if "Controls" in eligible_wellIDs.keys():
+        for file in eligible_tifs:
+            basename = os.path.basename(file)
+            filename, ext = os.path.splitext(basename)
+            extracted_wellid = extract_well_id(filename)
+
+            for control_group, wells in eligible_wellIDs['Controls'].items():
+                eligible_wellIDs['Controls'][control_group] = [file if well_id == extracted_wellid else well_id for well_id in wells]
+    else:
+        for file in eligible_tifs:
+            basename = os.path.basename(file)
+            filename, ext = os.path.splitext(basename)
+            extracted_wellid = extract_well_id(filename)
+            for compound, dosages in eligible_wellIDs.items():
+                for dosage, wells in dosages.items():
+                    for concentration, well_ids in wells.items():
+                        wells[concentration] = [file if well_id == extracted_wellid else well_id for well_id in well_ids]
 
     return eligible_wellIDs
 
+def filter_and_match_control_wellids(settings, wellid_config, eligible_tifs):
+    """
+    Picks a random wellID from the available wellIDs in the configuration
+    The get_associated_quadrant_wellids function finds the associated wellIDs in that quadrant
+    The final wellID is chosen from the associated wellIDs list depending on the quadrant selection in the settings
+    """
+    # Choose a random well for each of the controls
+    control_wellid_config = {"Controls": {}}
+    for control in wellid_config["Controls"]:
+        elements = wellid_config["Controls"][control]
+        selected_element = random.choice(elements)
+        control_wellid_config["Controls"][control] = [selected_element]
+
+    # print("Randomly chosen controls:")
+    # print(control_wellid_config)
+
+    # Replace the random well with its associated wellIDs from a 2x2 quadrant block
+    for key in control_wellid_config['Controls']:
+        control_wellid_config['Controls'][key] = [item for well_id in control_wellid_config['Controls'][key] for item in get_associated_quadrant_wellids(well_id)]
+    
+    # print("With Associated WellIDs:")
+    # print(control_wellid_config)
+
+    # Choose the specifici well from the 2x2 quadrant block based on the user quadrant_selection
+    quadrant = settings["quadrant_selection"]
+    for key in control_wellid_config['Controls']:
+        if quadrant.lower() == "all":
+            control_wellid_config['Controls'][key] = control_wellid_config['Controls'][key]
+        elif quadrant.lower() == "top left":
+            control_wellid_config['Controls'][key] = [control_wellid_config['Controls'][key][0]]
+        elif quadrant.lower() == "top right":
+            control_wellid_config['Controls'][key] = [control_wellid_config['Controls'][key][1]]
+        elif quadrant.lower() == "bottom left":
+            control_wellid_config['Controls'][key] = [control_wellid_config['Controls'][key][2]]
+        elif quadrant.lower() == "bottom right":
+            control_wellid_config['Controls'][key] = [control_wellid_config['Controls'][key][3]]
+        elif quadrant.lower() == "random":
+            random_number = random.randint(0, 3)
+            control_wellid_config['Controls'][key] = [control_wellid_config['Controls'][key][random_number]]
+
+    # print("After Quadrant Selection:")
+    # print(control_wellid_config)
+
+    matched_control_dict = match_tifs_to_wellIDs(eligible_tifs, control_wellid_config)
+
+    # print("After filename matching:")
+    # print(control_wellid_config)
+
+    return matched_control_dict
+
+def validate_files_to_montage(filepath_dict):
+    def check_filepaths_in_dict(d):
+        for key, value in d.items():
+            if isinstance(value, list):
+                if not all(os.path.isfile(filepath) for filepath in value):
+                    return False
+            elif isinstance(value, dict):
+                if not check_filepaths_in_dict(value):
+                    return False
+        return True
+
+    return check_filepaths_in_dict(filepath_dict)
+
+def get_384_quadrant_wellID(quadrant):
+    # Dictionary 
+    quadrant_transform = {
+        "Top Left": (0, 0),
+        "Top Right": (0, 1),
+        "Bottom Left": (1, 0),
+        "Bottom Right": (1, 1)
+    }
+
+    well_ids = []
+    for row in range(1, 17, 2):  # Skip every other row to match the 96-well layout
+        for col in range(1, 25, 2):  # Skip every other column
+            if quadrant != "Random":
+                # Calculate row and column for the specific quadrant
+                delta_row, delta_col = quadrant_transform[quadrant]
+                well_id = "{}{}".format(chr(64 + row + delta_row), col + delta_col)
+                well_ids.append(well_id)
+            else:
+                # Select a random well from the 2x2 block
+                delta_row, delta_col = random.choice(list(quadrant_transform.values()))
+                well_id = "{}{}".format(chr(64 + row + delta_row), col + delta_col)
+                well_ids.append(well_id)
+
+    return well_ids
+
+def get_associated_quadrant_wellids(well_id):
+    """
+    Returns a list of wellIDs from the quadrant of the input wellID in a 384w plate
+    """
+    rows = "ABCDEFGHIJKLMNOP"
+    row = well_id[0].upper()
+    col = int(well_id[1:])
+
+    # Adjust row and column to top-left of the quadrant
+    row_index = rows.index(row)
+    if row_index % 2 != 0:
+        top_row = rows[row_index - 1]
+        bottom_row = row
+    else:
+        top_row = row
+        bottom_row = rows[row_index + 1]
+
+    left_col = col - 1 if col % 2 == 0 else col
+
+    # Generate the well IDs of the quadrant
+    quadrant_wells = [
+        "{}{}".format(top_row, left_col),
+        "{}{}".format(top_row, left_col + 1),
+        "{}{}".format(bottom_row, left_col),
+        "{}{}".format(bottom_row, left_col + 1)
+    ]
+
+    return quadrant_wells
+
+def create_stack(filelist):
+    stack = None
+    for filepath in filelist:
+        img = IJ.openImage(filepath)
+        if stack is None:
+            # Initialize the stack with the first image
+            stack = ImageStack(img.getWidth(), img.getHeight())
+        stack.addSlice(img.getProcessor())
+        print("Added slice {}".format(filepath))
+    print("Stack Generated")
+    # Create an ImagePlus object with the stack and show it
+    stackedImage = ImagePlus("Stacked Image", stack)
+    
+    #stackedImage.show()
+    return stackedImage
+
+def create_stack_from_montage(image_list):
+    stack = None
+    for img in image_list:
+        if stack is None:
+            # Initialize the stack with the first image
+            stack = ImageStack(img.getWidth(), img.getHeight())
+        stack.addSlice(img.getProcessor())
+        print("Added slice")
+    print("Stack Generated")
+    
+    # Create an ImagePlus object with the stack
+    stackedImage = ImagePlus("Stacked Image", stack)
+    return stackedImage
+
+def create_single_montage(columns, rows, font_size, scale, border_size, stack):
+    command = "columns={} rows={} scale={} font={} border={} label".format(columns, rows, scale, font_size, border_size)
+    montage = IJ.run(stack, "Make Montage...", command)
+    montage = IJ.getImage()
+
+    # Check if montage is created successfully
+    if montage is None:
+        print("Montage creation failed.")
+        return None
+
+    return montage
+
+def create_final_montage(settings, directory, final_filedict):
+    """
+    final_filedict should have the same dictionary structure as the wellID config, but with wellIDs replaced with filepaths
+    settings should be the same settings dict coming from MontageGUI
+    all the filedicts coming in should have been validated in prior processes, this function will not validate anything.
+    """
+    # Output filepath will be the specified output directory, the source folder basename with the suffix + .tif
+    output_filepath = os.path.join(settings["output_directory"], os.path.basename(directory) + settings["output_suffix"] + ".tif")
+
+    # For All quadrants, first convert 2x 4x images to 2x 2x2 stacks.
+    # Then convert individual stacks to montages. 
+    # Then convert the two montages into stacks, then 
+    
+    # Generate the array of filepaths specifically in that order to be loaded as a stack and then montaged
+    if settings["quadrant_selection"].lower() == "all":
+        # If all of the quadrants are selected, then montage the 2x2 block first as separate elements, and then create the montage
+        # Deal with the controls first. Order should be DMSO, GR+, and GR+MS023 (left to right)
+        # Create a stack for each control quadrant and append it to the array
+        dmso_stack = create_stack(final_filedict["Controls"]["DMSO"])
+        dmso_montage = create_single_montage(2, 2, settings["label_font_size"], settings["scale"], settings["border_size"], dmso_stack)
+        ms023_stack = create_stack(final_filedict["Controls"]["1.8uMPolyGR+1uMMS023"])
+        ms023_montage = create_single_montage(2, 2, settings["label_font_size"], settings["scale"], settings["border_size"], ms023_stack)
+        gr_stack = create_stack(final_filedict["Controls"]["1.8uMPolyGR"])
+        gr_montage = create_single_montage(2, 2, settings["label_font_size"], settings["scale"], settings["border_size"], gr_stack)
+
+        final_montage_montages = [dmso_montage, ms023_montage, gr_montage]
+
+        # Montage each of these stacks separately 
+        for compound in final_filedict:
+            if compound != "Controls":
+                for gr_addition in final_filedict[compound]:
+                    for concentration in final_filedict[compound][gr_addition]:
+                        images_to_montage = final_filedict[compound][gr_addition][concentration]
+                        stack = create_stack(images_to_montage)
+                        montage = create_single_montage(2, 2, settings["label_font_size"], settings["scale"], settings["border_size"], stack)
+                        final_montage_montages.append(montage)
+        # Montage the final_montage_montages:
+
+        final_stack = create_stack_from_montage(final_montage_montages)
+        final_montage = create_single_montage(len(final_montage_montages), 1, 0, 1.0, settings["border_size"], final_stack)
+        IJ.saveAs(final_montage, "Tiff", output_filepath)
+        for imp in final_montage_montages:
+            imp.close()
+        # Stack > montage > stack > montage
+    else:
+
+        # Create a stack for each control quadrant and append it to the array
+        final_montage_filepaths = [final_filedict["Controls"]["DMSO"][0], final_filedict["Controls"]["1.8uMPolyGR+1uMMS023"][0], final_filedict["Controls"]["1.8uMPolyGR"][0]]
+
+        for compound in final_filedict:
+            if compound != "Controls":
+                for gr_addition in final_filedict[compound]:
+                    for concentration in final_filedict[compound][gr_addition]:
+                        images_to_montage = final_filedict[compound][gr_addition][concentration][0]
+                        final_montage_filepaths.append(images_to_montage)
+
+        final_stack = create_stack(final_montage_filepaths)
+        final_montage = create_single_montage(len(final_montage_filepaths), 1, 0, settings["scale"], settings["border_size"], final_stack)
+        IJ.saveAs(final_montage, "Tiff", output_filepath)
+        final_stack.close()
+        final_montage.close()
+
+    print("Saved montage to {}".format(output_filepath))
+    return "Success!"
+    
 settings = get_montage_settings()
 print("Captured Montage Settings")
 if settings is None:
     print("Captured no settings")
 print(settings)
 
-        
-wellid_config = load_dict(wellID_config_fp)
-print(wellid_config)
-exit()
+errors = errorlist()
 
 for directory_tuple in settings["input_directory_list"]:
+
     directory, read_step = directory_tuple
+    print("\nProcessing Montage from directory: {}".format(directory))
+
     # Filter out the wellIDs according to concentration/compound & PolyGR +/-
     isolated_wellIDs = isolate_wellIDs(settings, wellid_config)
+
     # Further filter out the wellIDs based on quadrant selection
     isolated_quadrants = isolate_quadrants(settings, isolated_wellIDs)
-    print(isolated_quadrants)
+
+    # Get a list of the eligible tif files after filtering for the channel and read step
     eligible_tifs = filter_eligible_tifs(settings, directory, read_step)
-    print(eligible_tifs)
+    #print("\tSuccessfully found {} eligible tifs for montage from {} ".format(len(eligible_tifs), directory))
+    if "ERROR" in eligible_tifs or eligible_tifs is None or len(eligible_tifs) < 1:
+        #errors.log(directory, "filter_eligible_tifs returned None")
+        errors.log(directory, eligible_tifs)
+        continue
+
+    # Filter and match the control wellIDs since they will be included in all montage images without exception
+    control_filedict = filter_and_match_control_wellids(settings, wellid_config, eligible_tifs)
+    if control_filedict is None:
+        errors.log(directory, "filter_and_match_controls returned None for directory")
+        continue
+    #print("\tSuccessfully filtered and matched control group .tifs for {}".format(directory))
+    # Validate that all the filepaths in the controls image list are real and skip if not real fps
+    control_filedict_validity_conf = validate_files_to_montage(control_filedict)
+    if control_filedict_validity_conf:
+        print("control_filedict is valid for all filepaths!")
+    elif not control_filedict_validity_conf:
+        errors.log(directory, "validate_files_to_montage failed for controls: " + str(control_filedict))
+        print("This may be because the wellIDs identified from your montage settings could not be found in the directory. Skipping this directory...")
+        continue
+
+    # Replace the wellIDs in the tifs to the corresponding tif filepaths
     quadrant_filedict = match_tifs_to_wellIDs(eligible_tifs, isolated_quadrants)
-    print(quadrant_filedict)
 
+    # Validate that all the filepaths in the selected image list are real and skip if not real fps
+    quadrant_filedict_validity_conf = validate_files_to_montage(quadrant_filedict)
+    if quadrant_filedict_validity_conf:
+        print("quadrant_filedict is valid for all filepaths!")
+    elif not quadrant_filedict_validity_conf:
+        errors.log(directory, "validate_files_to_montage failed for quadrant_filedict")
+        print("This may be because the wellIDs identified from your montage settings could not be found in the directory. Skipping this directory...")
+        continue
+    
+    #print("\nDirectory: {}\n\tquadrant_filedict: {}\n\tquadrant_filedict_validity_conf: {}\n\tcontrol_filedict: {}".format(directory, quadrant_filedict, quadrant_filedict_validity_conf, control_filedict))
+    # Combine ye olde dictionaries together before sending them to create the montage
+    #combined_dict = {**quadrant_filedict, **control_filedict}
+    combined_dict = quadrant_filedict.copy()
+    combined_dict.update(control_filedict)
+    print(combined_dict)
 
-    with open(r"C:\Users\akmishra\Desktop\kachow.json", "w") as writefile:
-        json.dump(quadrant_filedict, writefile, indent=4)
-        print("Successfully loaded wellID config")
+    montage_creation_confirmation = create_final_montage(settings, directory, combined_dict)
+    print(montage_creation_confirmation)
 
-
+# Print out all the errors from the logger
+error_list = errors.get_all_errors()
+print("\n\n{} ERRORS ENCOUNTERED".format(len(error_list)))
+for index, element in enumerate(error_list):
+    directory, reason = element
+    print("{}. {}\n\t{}".format(index + 1, directory, reason))
