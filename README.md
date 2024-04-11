@@ -11,3 +11,6 @@ Creates customized montage images from a folder of source TIFs. UI-enabled. Drag
 
 ## Batch File Rename (Batch File Rename.py)
 Allows files from a folder and subdirectory to be batch-renamed. On first usage, enter the folder of interest and it will generate a manifest of files inside the folder in an Excel workbook. Enter the new filename for each file in the second column, exit the workbook and follow the prompts. Run in terminal with a command line interface.
+
+## Montage Generator for Screens (Montage Generator for Screens.py)
+Creates montaged images from a folder of source TIFs based on a specific well configuration for 384-well plates used for drug screens. UI-enabled. Drag-and-drop into ImageJ and click run.
