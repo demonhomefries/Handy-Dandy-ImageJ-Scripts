@@ -579,7 +579,6 @@ class ComboBoxCellEditor(AbstractCellEditor, TableCellEditor):
         # Return the current value selected in the combo box
         return self.comboBox.getSelectedItem()
     
-
 class WindowCloseListener(WindowAdapter):
     def __init__(self, app):
         self.app = app
@@ -595,7 +594,7 @@ class MontageGUI(ActionListener):
         
         self.frame = JFrame("Montage Settings")
         self.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE)
-        self.frame.setSize(600, 830)
+        self.frame.setSize(600, 850)
         self.frame.setLayout(BorderLayout())
 
         # Directory Manager components
@@ -1129,7 +1128,7 @@ def isolate_quadrants(settings, isolated_wellids):
                 selected_wellIDs[compound][gr_key] = {}
 
             for sortby, well_list in sortby_dict.items():
-                if quadrant.lower() == "all":
+                if quadrant.lower() == "all quadrants":
                     selected_wellIDs[compound][gr_key][sortby] = well_list
                 elif quadrant.lower() == "top left":
                     selected_wellIDs[compound][gr_key][sortby] = [well_list[0]]
@@ -1320,6 +1319,22 @@ def get_associated_quadrant_wellids(well_id):
 
     return quadrant_wells
 
+# def create_stack_old(filelist):
+#     stack = None
+#     for filepath in filelist:
+#         img = IJ.openImage(filepath)
+#         if stack is None:
+#             # Initialize the stack with the first image
+#             stack = ImageStack(img.getWidth(), img.getHeight())
+#         stack.addSlice(img.getProcessor())
+#         print("Added slice {} to stack".format(filepath))
+#     print("Stack Generated")
+#     # Create an ImagePlus object with the stack and show it
+#     stackedImage = ImagePlus("Stacked Image", stack)
+    
+#     #stackedImage.show()
+#     return stackedImage
+
 def create_stack(filelist):
     stack = None
     for filepath in filelist:
@@ -1328,11 +1343,12 @@ def create_stack(filelist):
             # Initialize the stack with the first image
             stack = ImageStack(img.getWidth(), img.getHeight())
         stack.addSlice(img.getProcessor())
-        print("Added slice {}".format(filepath))
+        print("Added slice {} to stack".format(filepath))
     print("Stack Generated")
     # Create an ImagePlus object with the stack and show it
     stackedImage = ImagePlus("Stacked Image", stack)
-    
+    for i, filename in enumerate(filelist, start=1):
+        stackedImage.getStack().setSliceLabel(os.path.basename(filename), i)
     #stackedImage.show()
     return stackedImage
 
@@ -1343,11 +1359,15 @@ def create_stack_from_montage(image_list):
             # Initialize the stack with the first image
             stack = ImageStack(img.getWidth(), img.getHeight())
         stack.addSlice(img.getProcessor())
-        print("Added slice")
-    print("Stack Generated")
+        #print("Added slice")
+    #print("Stack Generated")
     
     # Create an ImagePlus object with the stack
     stackedImage = ImagePlus("Stacked Image", stack)
+    # for i, filename in enumerate(image_list, start=1):
+    #     stackedImage.getStack().setSliceLabel(os.path.basename(filename), i)
+    #     print("Kachow: ")
+    #     print(os.path.basename(filename))
     return stackedImage
 
 def create_single_montage(columns, rows, font_size, scale, border_size, stack):
@@ -1371,12 +1391,13 @@ def create_final_montage(settings, directory, final_filedict):
     # Output filepath will be the specified output directory, the source folder basename with the suffix + .tif
     output_filepath = os.path.join(settings["output_directory"], os.path.basename(directory) + settings["output_suffix"] + ".tif")
 
-    # For All quadrants, first convert 2x 4x images to 2x 2x2 stacks.
-    # Then convert individual stacks to montages. 
-    # Then convert the two montages into stacks, then 
+    # 1. For All quadrants, first convert 2x 4x images to 2x 2x2 stacks.
+    # 2. Convert individual stacks to montages. 
+    # 3. Convert the two montages into stacks
+    # 4. Convert stacks into montages 
     
     # Generate the array of filepaths specifically in that order to be loaded as a stack and then montaged
-    if settings["quadrant_selection"].lower() == "all":
+    if settings["quadrant_selection"].lower() == "all quadrants":
         # If all of the quadrants are selected, then montage the 2x2 block first as separate elements, and then create the montage
         # Deal with the controls first. Order should be DMSO, GR+, and GR+MS023 (left to right)
         # Create a stack for each control quadrant and append it to the array
@@ -1398,14 +1419,17 @@ def create_final_montage(settings, directory, final_filedict):
                         stack = create_stack(images_to_montage)
                         montage = create_single_montage(2, 2, settings["label_font_size"], settings["scale"], settings["border_size"], stack)
                         final_montage_montages.append(montage)
+        
+        
         # Montage the final_montage_montages:
-
         final_stack = create_stack_from_montage(final_montage_montages)
-        final_montage = create_single_montage(len(final_montage_montages), 1, 0, 1.0, settings["border_size"], final_stack)
+        final_montage = create_single_montage(len(final_montage_montages), 1, settings["label_font_size"], 1.0, settings["border_size"], final_stack)
         IJ.saveAs(final_montage, "Tiff", output_filepath)
         for imp in final_montage_montages:
             imp.close()
-        # Stack > montage > stack > montage
+        final_stack.close()
+        final_montage.close()
+
     else:
 
         # Create a stack for each control quadrant and append it to the array
@@ -1419,10 +1443,10 @@ def create_final_montage(settings, directory, final_filedict):
                         final_montage_filepaths.append(images_to_montage)
 
         final_stack = create_stack(final_montage_filepaths)
-        final_montage = create_single_montage(len(final_montage_filepaths), 1, 0, settings["scale"], settings["border_size"], final_stack)
+        final_montage = create_single_montage(len(final_montage_filepaths), 1, settings["label_font_size"], settings["scale"], settings["border_size"], final_stack)
         IJ.saveAs(final_montage, "Tiff", output_filepath)
-        final_stack.close()
-        final_montage.close()
+        #final_stack.close()
+        #final_montage.close()
 
     print("Saved montage to {}".format(output_filepath))
     return "Success!"
@@ -1468,7 +1492,7 @@ for directory_tuple in settings["input_directory_list"]:
         errors.log(directory, "validate_files_to_montage failed for controls: " + str(control_filedict))
         print("This may be because the wellIDs identified from your montage settings could not be found in the directory. Skipping this directory...")
         continue
-
+    
     # Replace the wellIDs in the tifs to the corresponding tif filepaths
     quadrant_filedict = match_tifs_to_wellIDs(eligible_tifs, isolated_quadrants)
 
@@ -1486,7 +1510,6 @@ for directory_tuple in settings["input_directory_list"]:
     #combined_dict = {**quadrant_filedict, **control_filedict}
     combined_dict = quadrant_filedict.copy()
     combined_dict.update(control_filedict)
-    print(combined_dict)
 
     montage_creation_confirmation = create_final_montage(settings, directory, combined_dict)
     print(montage_creation_confirmation)
