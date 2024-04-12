@@ -1337,7 +1337,7 @@ def get_associated_quadrant_wellids(well_id):
 
 def create_stack(filelist):
     stack = None
-    for filepath in filelist:
+    for filepath, label_name in filelist:
         img = IJ.openImage(filepath)
         if stack is None:
             # Initialize the stack with the first image
@@ -1345,10 +1345,12 @@ def create_stack(filelist):
         stack.addSlice(img.getProcessor())
         print("Added slice {} to stack".format(filepath))
     print("Stack Generated")
-    # Create an ImagePlus object with the stack and show it
+    # Create an ImagePlus object with the stack
     stackedImage = ImagePlus("Stacked Image", stack)
-    for i, filename in enumerate(filelist, start=1):
-        stackedImage.getStack().setSliceLabel(os.path.basename(filename), i)
+    print(filelist)
+    for i, element in enumerate(filelist, start=1):
+        filepath, label_name = element
+        stackedImage.getStack().setSliceLabel(label_name, i)
     #stackedImage.show()
     return stackedImage
 
@@ -1390,6 +1392,45 @@ def create_final_montage(settings, directory, final_filedict):
     """
     # Output filepath will be the specified output directory, the source folder basename with the suffix + .tif
     output_filepath = os.path.join(settings["output_directory"], os.path.basename(directory) + settings["output_suffix"] + ".tif")
+    
+    dmso_filelist = []
+    for filepath in final_filedict["Controls"]["DMSO"]:
+        label_name = extract_well_id(os.path.basename(filepath)) + "_Control_DMSO"
+        dmso_filelist.append((filepath, label_name))
+    if len(dmso_filelist) > 1:
+        dmso_stack = create_stack(dmso_filelist)
+        dmso_montage = create_single_montage(2, 2, settings["label_font_size"], settings["scale"], settings["border_size"], dmso_stack)
+    else:
+        dmso_montage = dmso_filelist[0]
+
+    ms023_filelist = []
+    for filepath in final_filedict["Controls"]["1.8uMPolyGR+1uMMS023"]:
+        label_name = extract_well_id(os.path.basename(filepath)) + "_Control_1.8uMGR+1uMMS023"
+        ms023_filelist.append((filepath, label_name))
+    if len(ms023_filelist) > 1:
+        ms023_stack = create_stack(ms023_filelist)
+        ms023_montage = create_single_montage(2, 2, settings["label_font_size"], settings["scale"], settings["border_size"], ms023_stack)
+    else:
+        ms023_montage = ms023_filelist[0]
+
+    gr_filelist = []
+    for filepath in final_filedict["Controls"]["1.8uMPolyGR"]:
+        label_name = extract_well_id(os.path.basename(filepath)) + "_Control_1.8uMPolyGR"
+        gr_filelist.append((filepath, label_name))
+    if len(ms023_filelist) > 1:
+        gr_stack = create_stack(gr_filelist)
+        gr_montage = create_single_montage(2, 2, settings["label_font_size"], settings["scale"], settings["border_size"], gr_stack)
+    else:
+        # If the length of the filelist is not more than one, that indicates that it does not need to be a stack, and we can pass on the filepath and label
+        # The lengths of the filelist would only be more than one (four) if the all quadrants was selected
+        gr_montage = gr_filelist[0]
+
+    # Exit case in case of an error here
+    if dmso_montage is None or ms023_montage is None or gr_montage is None:
+        errors.log(directory, "dmso_montage: {}, ms023_montage: {}, or gr_montage: {} returned as None".format(dmso_montage, ms023_montage, gr_montage))
+        exit()
+
+    final_montage_montages = [dmso_montage, ms023_montage, gr_montage]
 
     # 1. For All quadrants, first convert 2x 4x images to 2x 2x2 stacks.
     # 2. Convert individual stacks to montages. 
@@ -1401,21 +1442,16 @@ def create_final_montage(settings, directory, final_filedict):
         # If all of the quadrants are selected, then montage the 2x2 block first as separate elements, and then create the montage
         # Deal with the controls first. Order should be DMSO, GR+, and GR+MS023 (left to right)
         # Create a stack for each control quadrant and append it to the array
-        dmso_stack = create_stack(final_filedict["Controls"]["DMSO"])
-        dmso_montage = create_single_montage(2, 2, settings["label_font_size"], settings["scale"], settings["border_size"], dmso_stack)
-        ms023_stack = create_stack(final_filedict["Controls"]["1.8uMPolyGR+1uMMS023"])
-        ms023_montage = create_single_montage(2, 2, settings["label_font_size"], settings["scale"], settings["border_size"], ms023_stack)
-        gr_stack = create_stack(final_filedict["Controls"]["1.8uMPolyGR"])
-        gr_montage = create_single_montage(2, 2, settings["label_font_size"], settings["scale"], settings["border_size"], gr_stack)
-
-        final_montage_montages = [dmso_montage, ms023_montage, gr_montage]
 
         # Montage each of these stacks separately 
         for compound in final_filedict:
             if compound != "Controls":
                 for gr_addition in final_filedict[compound]:
                     for concentration in final_filedict[compound][gr_addition]:
-                        images_to_montage = final_filedict[compound][gr_addition][concentration]
+                        images_to_montage = []
+                        for image_fp in final_filedict[compound][gr_addition][concentration]:
+                            label_name = extract_well_id(os.path.basename(image_fp)) + "_" + compound + "_" + gr_addition + "_" + concentration
+                            images_to_montage.append((image_fp, label_name))
                         stack = create_stack(images_to_montage)
                         montage = create_single_montage(2, 2, settings["label_font_size"], settings["scale"], settings["border_size"], stack)
                         final_montage_montages.append(montage)
@@ -1432,21 +1468,20 @@ def create_final_montage(settings, directory, final_filedict):
 
     else:
 
-        # Create a stack for each control quadrant and append it to the array
-        final_montage_filepaths = [final_filedict["Controls"]["DMSO"][0], final_filedict["Controls"]["1.8uMPolyGR+1uMMS023"][0], final_filedict["Controls"]["1.8uMPolyGR"][0]]
-
         for compound in final_filedict:
             if compound != "Controls":
                 for gr_addition in final_filedict[compound]:
                     for concentration in final_filedict[compound][gr_addition]:
-                        images_to_montage = final_filedict[compound][gr_addition][concentration][0]
-                        final_montage_filepaths.append(images_to_montage)
-
-        final_stack = create_stack(final_montage_filepaths)
-        final_montage = create_single_montage(len(final_montage_filepaths), 1, settings["label_font_size"], settings["scale"], settings["border_size"], final_stack)
+                        for image_fp in final_filedict[compound][gr_addition][concentration]:
+                            label_name = extract_well_id(os.path.basename(image_fp)) + "_" + compound + "_" + gr_addition + "_" + concentration
+                            # images_to_montage = final_filedict[compound][gr_addition][concentration][0]
+                            final_montage_montages.append((image_fp, label_name))
+        #final_montage_montages is full of stacks or montages - should be considered images
+        final_stack = create_stack(final_montage_montages)
+        final_montage = create_single_montage(len(final_montage_montages), 1, settings["label_font_size"], settings["scale"], settings["border_size"], final_stack)
         IJ.saveAs(final_montage, "Tiff", output_filepath)
-        #final_stack.close()
-        #final_montage.close()
+        final_stack.close()
+        final_montage.close()
 
     print("Saved montage to {}".format(output_filepath))
     return "Success!"
@@ -1507,7 +1542,6 @@ for directory_tuple in settings["input_directory_list"]:
     
     #print("\nDirectory: {}\n\tquadrant_filedict: {}\n\tquadrant_filedict_validity_conf: {}\n\tcontrol_filedict: {}".format(directory, quadrant_filedict, quadrant_filedict_validity_conf, control_filedict))
     # Combine ye olde dictionaries together before sending them to create the montage
-    #combined_dict = {**quadrant_filedict, **control_filedict}
     combined_dict = quadrant_filedict.copy()
     combined_dict.update(control_filedict)
 
