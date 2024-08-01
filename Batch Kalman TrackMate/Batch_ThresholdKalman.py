@@ -5,14 +5,14 @@ microns_per_pixel = 0.325
 detectorSettings = {
     'TARGET_CHANNEL': 1,
     'SIMPLIFY_CONTOURS': False,
-    'INTENSITY_THRESHOLD': 80.0
+    'INTENSITY_THRESHOLD': 100.0
 }
 
 # Area filter settings
 featureFilterSettings = {
     'FEATURE': 'AREA',
     'IS_ABOVE': False, # Change True to False if filtering spots below threshold
-    'THRESHOLD': 15.0,
+    'THRESHOLD': 50.0,
 }
 
 # Kalman tracker settings
@@ -22,7 +22,7 @@ kalmanSettings = {
     'MAX_FRAME_GAP': 2
 }
 
-csv_merger_filepath = r"C:\Users\Trackmate Automation\Track-Spot_Merger_Auto.py"
+csv_merger_filepath = r"C:\Users\akmishra\Desktop\Batch Kalman TrackMate\Track-Spot_Merger_Auto.py"
 
 
 
@@ -190,9 +190,19 @@ for index, image in enumerate(tif_filelist):
     input_dirname = os.path.dirname(image)
     final_output_dir = input_dirname.replace(input_dir, autotracked_dir)
 
+    # In case there are any trailing backslashes
+    if input_dir.endswith("\\"):
+        input_dir = input_dir[:-1]
+
     # Get the output names
-    spot_table_csv_file = File(os.path.join(final_output_dir, image_name + "_spottable_auto.csv"))
-    track_table_csv_file = File(os.path.join(final_output_dir, image_name + "_tracktable_auto.csv"))
+    spot_table_csv_filepath = os.path.join(final_output_dir, image_name + "_spottable_auto.csv")
+    spot_table_csv_file = File(spot_table_csv_filepath)
+    track_table_csv_filepath = os.path.join(final_output_dir, image_name + "_tracktable_auto.csv")
+    track_table_csv_file = File(track_table_csv_filepath)
+
+    print("spot_table_csv_filepath: {}".format(spot_table_csv_filepath))
+    print("track_table_csv_filepath: {}".format(track_table_csv_filepath))
+
     xml_file = File(os.path.join(final_output_dir, image_name + "_auto.xml"))
 
     print("Starting to process image {}/{}".format(index +1, len(tif_filelist), image_name))
@@ -268,9 +278,9 @@ for index, image in enumerate(tif_filelist):
     # Working exports
     track_table_view = TrackTableView(trackmate.getModel(), sm, ds)
     track_table_view.getSpotTable().exportToCsv(spot_table_csv_file)
-    print("\tSaved spot table to {}")
+    print("\tSaved spot table to " + spot_table_csv_filepath)
     track_table_view.getTrackTable().exportToCsv(track_table_csv_file)
-    print("\tSaved track table to {}")
+    print("\tSaved track table to " + track_table_csv_filepath)
 
     tables_generated.append((spot_table_csv_file, track_table_csv_file))
 
@@ -297,12 +307,22 @@ for index, image in enumerate(tif_filelist):
     command = "python " + csv_merger_script_fp + " --csvlist " + str(csv_list_argument)
 
     # Execute the command
-    print(command)
-    output_message = subprocess.run(command, capture_output=True, text=True)
-    if output_message.returncode != 0:
+    try:
+        output_message = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT)
+        output_message = output_message.decode('utf-8')
+        print(output_message)
+    except subprocess.CalledProcessError as e:
         print("ERROR Track-Spot_Merger_Auto failed: ")
         print("Command: {}".format(command))
-        print(output_message.stdout)
-        print(output_message.stderr)
+        print(e.output.decode('utf-8'))
 
-    print(output_message.stdout)
+    # Old code:
+    # print(command)
+    # output_message = subprocess.run(command, capture_output=True, text=True)
+    # if output_message.returncode != 0:
+    #     print("ERROR Track-Spot_Merger_Auto failed: ")
+    #     print("Command: {}".format(command))
+    #     print(output_message.stdout)
+    #     print(output_message.stderr)
+
+    # print(output_message.stdout)
